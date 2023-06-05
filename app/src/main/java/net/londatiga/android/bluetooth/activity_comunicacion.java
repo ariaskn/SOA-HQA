@@ -156,12 +156,13 @@ public class activity_comunicacion extends Activity
                     //cuando recibo toda una linea la muestro en el layout
                     if (endOfLineIndex > 0) // es mayor que 0, esto indica que se ha encontrado el final de una línea completa en la cadena acumulada.
                     {
+                        showEnabled();
                         String dataInPrint = recDataString.substring(0, endOfLineIndex); // se utiliza para extraer una porción de la cadena acumulada
                         if(dataInPrint == "1")
                         {
                             // buzzer sonando
                             showToast("Tocan timbre!!!");
-                            showEnabled();
+                            //showEnabled();
                         }
                         recDataString.delete(0, recDataString.length()); // se utiliza para eliminar el contenido actual del objeto recDataString
                     }
