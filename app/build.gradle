@@ -8,6 +8,7 @@ android {
         applicationId "net.londatiga.android.bluetooth"
         minSdkVersion 14
         targetSdkVersion 26
+        setProperty("archivesBaseName", "HQA_App")
     }
 
     buildTypes {

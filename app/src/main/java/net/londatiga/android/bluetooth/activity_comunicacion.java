@@ -27,9 +27,17 @@ import android.util.Log;
 //******************************************** Hilo principal del Activity**************************************
 public class activity_comunicacion extends Activity
 {
-    String dataInPrint;
-    Button btnEnviar;
-    TextView txtMensaje;
+    //String dataInPrint;
+    //Button btnEnviar;
+    Button btnNPAA;
+    Button btnESE;
+    Button btnNEI;
+    Button btnNMEEEM;
+    Button btnE5MTA;
+    Button btnLAC;
+    Button btnNM;
+    Button btnREINICIAR;
+    //TextView txtMensaje;
 
     Handler bluetoothIn; // Handler en Android es una clase que permite enviar y procesar mensajes y tareas en un hilo o hilo de ejecución específico.
     final int handlerState = 0; //utilizado para identificar el mensaje del controlador
@@ -54,8 +62,16 @@ public class activity_comunicacion extends Activity
         setContentView(R.layout.activity_comunicacion);
 
         //Se definen los componentes del layout
-        btnEnviar=(Button)findViewById(R.id.btnEnviar);
-        txtMensaje= (EditText)findViewById(R.id.editTextMensaje);
+        //btnEnviar=(Button)findViewById(R.id.btnEnviar);
+        btnNPAA=(Button)findViewById(R.id.NPAA);
+        btnESE=(Button)findViewById(R.id.ESE);
+        btnNEI=(Button)findViewById(R.id.NEI);
+        btnNMEEEM=(Button)findViewById(R.id.NMEEEM);
+        btnE5MTA=(Button)findViewById(R.id.E5MTA);
+        btnLAC=(Button)findViewById(R.id.LAC);
+        btnNM=(Button)findViewById(R.id.NM);
+        btnREINICIAR=(Button)findViewById(R.id.REINICIAR);
+        //txtMensaje= (EditText)findViewById(R.id.editTextMensaje);
 
         //obtengo el adaptador del bluethoot
         btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -65,8 +81,15 @@ public class activity_comunicacion extends Activity
         bluetoothIn = Handler_Msg_Hilo_Principal();
 
         //defino los handlers para los botones Apagar y encender
-        btnEnviar.setOnClickListener(btnEnviarListener);
-
+        //btnEnviar.setOnClickListener(btnEnviarListener);
+        btnNPAA.setOnClickListener(btnNPAAListener);
+        btnESE.setOnClickListener(btnESEListener);
+        btnNEI.setOnClickListener(btnNEIListener);
+        btnNMEEEM.setOnClickListener(btnNMEEEMListener);
+        btnE5MTA.setOnClickListener(btnE5MTAListener);
+        btnLAC.setOnClickListener(btnLACListener);
+        btnNM.setOnClickListener(btnNMListener);
+        btnREINICIAR.setOnClickListener(btnREINICIARListener);
     }
 
     @Override
@@ -155,30 +178,116 @@ public class activity_comunicacion extends Activity
                     String timbre = new String(readMessage);
                     Log.d("Valor timbre", timbre);
 
+                    //Estaría bueno poner una notificación
                     if(timbre.equals("1")) { showToast("Tocan timbre!!!"); }
                 }
             }
-        };
+    };
 
     }
 
-    private void showEnabled()
+   /* private void showEnabled()
     {
         btnEnviar.setEnabled(true);
-    }
+    }*/
 
 
     //Listener del boton enviar que envia  msj para selecionar un mensaje del TecladoMatricial a Arduino atraves del Bluethoot
-    private View.OnClickListener btnEnviarListener = new View.OnClickListener()
+    private View.OnClickListener btnNPAAListener = new View.OnClickListener()
     {
         @Override
         public void onClick(View v)
         {
-            mConnectedThread.write(txtMensaje.getText().toString());
+            mConnectedThread.write(new String("1"));
+
             showToast("Mensaje enviado");
-            showToast(dataInPrint);
         }
     };
+
+    //Listener del boton enviar que envia  msj para selecionar un mensaje del TecladoMatricial a Arduino atraves del Bluethoot
+    private View.OnClickListener btnESEListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            mConnectedThread.write(new String("2"));
+
+            showToast("Mensaje enviado");
+        }
+    };
+
+    //Listener del boton enviar que envia  msj para selecionar un mensaje del TecladoMatricial a Arduino atraves del Bluethoot
+    private View.OnClickListener btnNEIListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            mConnectedThread.write(new String("3"));
+
+            showToast("Mensaje enviado");
+        }
+    };
+
+    //Listener del boton enviar que envia  msj para selecionar un mensaje del TecladoMatricial a Arduino atraves del Bluethoot
+    private View.OnClickListener btnNMEEEMListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            mConnectedThread.write(new String("4"));
+
+            showToast("Mensaje enviado");
+        }
+    };
+
+    //Listener del boton enviar que envia  msj para selecionar un mensaje del TecladoMatricial a Arduino atraves del Bluethoot
+    private View.OnClickListener btnE5MTAListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            mConnectedThread.write(new String("5"));
+
+            showToast("Mensaje enviado");
+        }
+    };
+
+    //Listener del boton enviar que envia  msj para selecionar un mensaje del TecladoMatricial a Arduino atraves del Bluethoot
+    private View.OnClickListener btnLACListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            mConnectedThread.write(new String("6"));
+
+            showToast("Mensaje enviado");
+        }
+    };
+
+    //Listener del boton enviar que envia  msj para selecionar un mensaje del TecladoMatricial a Arduino atraves del Bluethoot
+    private View.OnClickListener btnNMListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            mConnectedThread.write(new String("*"));
+
+            showToast("Mensaje enviado");
+        }
+    };
+
+    //Listener del boton enviar que envia  msj para selecionar un mensaje del TecladoMatricial a Arduino atraves del Bluethoot
+    private View.OnClickListener btnREINICIARListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(View v)
+        {
+            mConnectedThread.write(new String("#"));
+
+            showToast("Mensaje enviado");
+        }
+    };
+
 
     private void showToast(String message) // es un método personalizado que se utiliza para mostrar un mensaje emergente (toast)
     {
