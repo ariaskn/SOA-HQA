@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
+import android.util.Log;
 
 /*********************************************************************************************************
  * Activity que muestra realiza la comunicacion con Arduino
@@ -26,6 +27,7 @@ import java.util.UUID;
 //******************************************** Hilo principal del Activity**************************************
 public class activity_comunicacion extends Activity
 {
+    String dataInPrint;
     Button btnEnviar;
     TextView txtMensaje;
 
@@ -47,6 +49,7 @@ public class activity_comunicacion extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        showToast("PEPE");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comunicacion);
 
@@ -142,30 +145,17 @@ public class activity_comunicacion extends Activity
     {
         return new Handler()
         {
+            //Sobrescribe el método handleMessage para manejar los mensajes enviados al hilo principal
             public void handleMessage(android.os.Message msg)
-            { // sobrescribe el método handleMessage para manejar los mensajes enviados al hilo principal
-                //si se recibio un msj del hilo secundario
-                if (msg.what == handlerState) // si msg.what = 0
+            {
+                //Si se recibio un msj del hilo secundario
+                if (msg.what == handlerState) // si msg.what = 0 -> el what es para identificar tipos de mensaje. User-defined message code so that the recipient can identify what this message is about.
                 {
-                    //voy concatenando el msj
                     String readMessage = (String) msg.obj; // obj es un campo de tipo genérico que puede contener cualquier objeto.
-                    recDataString.append(readMessage); // se utiliza para concatenar
-                    int endOfLineIndex = recDataString.indexOf("\r\n"); // El método indexOf() es un método de la clase StringBuilder que se utiliza para
-                    // buscar la primera aparición de una subcadena dentro de otra cadena
+                    String timbre = new String(readMessage);
+                    Log.d("Valor timbre", timbre);
 
-                    //cuando recibo toda una linea la muestro en el layout
-                    if (endOfLineIndex > 0) // es mayor que 0, esto indica que se ha encontrado el final de una línea completa en la cadena acumulada.
-                    {
-                        showEnabled();
-                        String dataInPrint = recDataString.substring(0, endOfLineIndex); // se utiliza para extraer una porción de la cadena acumulada
-                        if(dataInPrint == "1")
-                        {
-                            // buzzer sonando
-                            showToast("Tocan timbre!!!");
-                            //showEnabled();
-                        }
-                        recDataString.delete(0, recDataString.length()); // se utiliza para eliminar el contenido actual del objeto recDataString
-                    }
+                    if(timbre.equals("1")) { showToast("Tocan timbre!!!"); }
                 }
             }
         };
@@ -186,6 +176,7 @@ public class activity_comunicacion extends Activity
         {
             mConnectedThread.write(txtMensaje.getText().toString());
             showToast("Mensaje enviado");
+            showToast(dataInPrint);
         }
     };
 
@@ -233,6 +224,7 @@ public class activity_comunicacion extends Activity
                 {
                     //se leen los datos del Bluethoot
                     bytes = mmInStream.read(buffer);
+                    Log.d("MainActivity", new String(buffer, 0, bytes));
                     String readMessage = new String(buffer, 0, bytes);
 
                      //se muestran en el layout de la activity, utilizando el handler del hilo
