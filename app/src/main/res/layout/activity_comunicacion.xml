@@ -28,7 +28,7 @@ android:background="@drawable/communication_background">
         android:layout_marginRight="56dp"
         android:layout_marginBottom="530dp"
         android:text="No puedo atenderte ahora."
-        android:background="@drawable/round2"/>
+        android:background="@drawable/round4"/>
 
     <Button
         android:id="@+id/ESE"
@@ -43,9 +43,9 @@ android:background="@drawable/communication_background">
         android:layout_marginLeft="56dp"
         android:layout_marginEnd="56dp"
         android:layout_marginRight="56dp"
-        android:layout_marginBottom="480dp"
+        android:layout_marginBottom="475dp"
         android:text="Estoy saliendo, esperame."
-        android:background="@drawable/round2"/>
+        android:background="@drawable/round4"/>
 
     <Button
         android:id="@+id/NEI"
@@ -60,9 +60,9 @@ android:background="@drawable/communication_background">
         android:layout_marginLeft="56dp"
         android:layout_marginEnd="56dp"
         android:layout_marginRight="56dp"
-        android:layout_marginBottom="430dp"
+        android:layout_marginBottom="420dp"
         android:text="No estoy interesado."
-        android:background="@drawable/round2"/>
+        android:background="@drawable/round4"/>
 
     <Button
         android:id="@+id/NMEEEM"
@@ -79,7 +79,7 @@ android:background="@drawable/communication_background">
         android:layout_marginRight="56dp"
         android:layout_marginBottom="365dp"
         android:text="No me encuentro en este momento."
-        android:background="@drawable/round2"/>
+        android:background="@drawable/round4"/>
 
     <Button
         android:id="@+id/E5MTA"
@@ -94,9 +94,9 @@ android:background="@drawable/communication_background">
         android:layout_marginLeft="56dp"
         android:layout_marginEnd="56dp"
         android:layout_marginRight="56dp"
-        android:layout_marginBottom="315dp"
+        android:layout_marginBottom="310dp"
         android:text="En 5 minutos te atiendo."
-        android:background="@drawable/round2"/>
+        android:background="@drawable/round4"/>
 
     <Button
         android:id="@+id/LAC"
@@ -111,9 +111,9 @@ android:background="@drawable/communication_background">
         android:layout_marginLeft="56dp"
         android:layout_marginEnd="56dp"
         android:layout_marginRight="56dp"
-        android:layout_marginBottom="265dp"
+        android:layout_marginBottom="255dp"
         android:text="Llamame al cel."
-        android:background="@drawable/round2"/>
+        android:background="@drawable/round4"/>
 
     <Button
         android:id="@+id/NM"
@@ -128,9 +128,9 @@ android:background="@drawable/communication_background">
         android:layout_marginLeft="56dp"
         android:layout_marginEnd="56dp"
         android:layout_marginRight="56dp"
-        android:layout_marginBottom="215dp"
+        android:layout_marginBottom="200dp"
         android:text="NO MOLESTAR."
-        android:background="@drawable/round2"/>
+        android:background="@drawable/round4"/>
 
     <Button
         android:id="@+id/REINICIAR"
@@ -145,9 +145,9 @@ android:background="@drawable/communication_background">
         android:layout_marginLeft="56dp"
         android:layout_marginEnd="56dp"
         android:layout_marginRight="56dp"
-        android:layout_marginBottom="165dp"
+        android:layout_marginBottom="145dp"
         android:text="REINICIAR."
-        android:background="@drawable/round2"/>
+        android:background="@drawable/round4"/>
 
     <TextView
         android:id="@+id/textSeleccioneRespuesta"
