@@ -10,7 +10,8 @@ android:paddingLeft="@dimen/activity_horizontal_margin"
 android:paddingRight="@dimen/activity_horizontal_margin"
 android:paddingTop="@dimen/activity_vertical_margin"
 tools:context="net.londatiga.android.bluetooth.activity_comunicacion"
-android:theme="@style/AppTheme">
+android:theme="@style/AppTheme"
+android:background="@drawable/communication_background">
 
     <Button
         android:id="@+id/NPAA"
@@ -26,7 +27,8 @@ android:theme="@style/AppTheme">
         android:layout_marginEnd="56dp"
         android:layout_marginRight="56dp"
         android:layout_marginBottom="530dp"
-        android:text="No puedo atenderte ahora." />
+        android:text="No puedo atenderte ahora."
+        android:background="@drawable/round2"/>
 
     <Button
         android:id="@+id/ESE"
@@ -42,7 +44,8 @@ android:theme="@style/AppTheme">
         android:layout_marginEnd="56dp"
         android:layout_marginRight="56dp"
         android:layout_marginBottom="480dp"
-        android:text="Estoy saliendo, esperame." />
+        android:text="Estoy saliendo, esperame."
+        android:background="@drawable/round2"/>
 
     <Button
         android:id="@+id/NEI"
@@ -58,7 +61,8 @@ android:theme="@style/AppTheme">
         android:layout_marginEnd="56dp"
         android:layout_marginRight="56dp"
         android:layout_marginBottom="430dp"
-        android:text="No estoy interesado." />
+        android:text="No estoy interesado."
+        android:background="@drawable/round2"/>
 
     <Button
         android:id="@+id/NMEEEM"
@@ -74,7 +78,8 @@ android:theme="@style/AppTheme">
         android:layout_marginEnd="56dp"
         android:layout_marginRight="56dp"
         android:layout_marginBottom="365dp"
-        android:text="No me encuentro en este momento." />
+        android:text="No me encuentro en este momento."
+        android:background="@drawable/round2"/>
 
     <Button
         android:id="@+id/E5MTA"
@@ -90,7 +95,8 @@ android:theme="@style/AppTheme">
         android:layout_marginEnd="56dp"
         android:layout_marginRight="56dp"
         android:layout_marginBottom="315dp"
-        android:text="En 5 minutos te atiendo." />
+        android:text="En 5 minutos te atiendo."
+        android:background="@drawable/round2"/>
 
     <Button
         android:id="@+id/LAC"
@@ -106,7 +112,8 @@ android:theme="@style/AppTheme">
         android:layout_marginEnd="56dp"
         android:layout_marginRight="56dp"
         android:layout_marginBottom="265dp"
-        android:text="Llamame al cel." />
+        android:text="Llamame al cel."
+        android:background="@drawable/round2"/>
 
     <Button
         android:id="@+id/NM"
@@ -122,7 +129,8 @@ android:theme="@style/AppTheme">
         android:layout_marginEnd="56dp"
         android:layout_marginRight="56dp"
         android:layout_marginBottom="215dp"
-        android:text="NO MOLESTAR." />
+        android:text="NO MOLESTAR."
+        android:background="@drawable/round2"/>
 
     <Button
         android:id="@+id/REINICIAR"
@@ -138,7 +146,8 @@ android:theme="@style/AppTheme">
         android:layout_marginEnd="56dp"
         android:layout_marginRight="56dp"
         android:layout_marginBottom="165dp"
-        android:text="REINICIAR." />
+        android:text="REINICIAR."
+        android:background="@drawable/round2"/>
 
     <TextView
         android:id="@+id/textSeleccioneRespuesta"
@@ -155,6 +164,7 @@ android:theme="@style/AppTheme">
         android:gravity="center_horizontal"
         android:text="Seleccione Respuesta"
         android:textColor="#3F51B5"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:background="@drawable/round2"/>
 
 </RelativeLayout>
