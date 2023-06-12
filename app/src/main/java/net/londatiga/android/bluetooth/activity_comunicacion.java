@@ -6,6 +6,10 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -25,8 +29,11 @@ import android.util.Log;
  **********************************************************************************************************/
 
 //******************************************** Hilo principal del Activity**************************************
-public class activity_comunicacion extends Activity
+public class activity_comunicacion extends Activity implements SensorEventListener
 {
+    SensorManager sm;
+    Sensor sensor;
+
     //String dataInPrint;
     //Button btnEnviar;
     Button btnNPAA;
@@ -53,11 +60,20 @@ public class activity_comunicacion extends Activity
 
     // Cadena para dirección MAC del Hc05
     private static String address = null;
+    protected void Ini_Sensores()
+    {
+        sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_PROXIMITY),   SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    // Metodo para parar la escucha de los sensores
+    private void Parar_Sensores()
+    {
+        sm.unregisterListener(this, sm.getDefaultSensor(Sensor.TYPE_PROXIMITY));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        showToast("PEPE");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comunicacion);
 
@@ -90,12 +106,16 @@ public class activity_comunicacion extends Activity
         btnLAC.setOnClickListener(btnLACListener);
         btnNM.setOnClickListener(btnNMListener);
         btnREINICIAR.setOnClickListener(btnREINICIARListener);
+        
+        sm = (SensorManager)getSystemService(SENSOR_SERVICE);
+        sensor = sm.getDefaultSensor(Sensor.TYPE_PROXIMITY);
     }
 
     @Override
     //Cada vez que se detecta el evento OnResume se establece la comunicacion con el HC05, creando un
     //socketBluethoot
     public void onResume() {
+        Ini_Sensores();
         super.onResume();
 
         //Obtengo el parametro, aplicando un Bundle, que me indica la Mac Adress del HC05
@@ -147,7 +167,9 @@ public class activity_comunicacion extends Activity
     //Cuando se ejecuta el evento onPause se cierra el socket Bluethoot, para no recibiendo datos
     public void onPause()
     {
+        Parar_Sensores();
         super.onPause();
+
         try
         {
             //No dejes los enchufes de Bluetooth abiertos al salir de la actividad
@@ -156,6 +178,34 @@ public class activity_comunicacion extends Activity
             //insertar codigo para tratar le e
         }
     }
+
+    @Override
+    protected void onStop()
+    {
+
+        Parar_Sensores();
+
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        Parar_Sensores();
+
+        super.onDestroy();
+    }
+
+
+    @Override
+    protected void onRestart()
+    {
+        Ini_Sensores();
+
+        super.onRestart();
+    }
+
+
 
     //Metodo que crea el socket bluethoot
     private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException {
@@ -204,7 +254,6 @@ public class activity_comunicacion extends Activity
         }
     };
 
-    //Listener del boton enviar que envia  msj para selecionar un mensaje del TecladoMatricial a Arduino atraves del Bluethoot
     private View.OnClickListener btnESEListener = new View.OnClickListener()
     {
         @Override
@@ -216,7 +265,6 @@ public class activity_comunicacion extends Activity
         }
     };
 
-    //Listener del boton enviar que envia  msj para selecionar un mensaje del TecladoMatricial a Arduino atraves del Bluethoot
     private View.OnClickListener btnNEIListener = new View.OnClickListener()
     {
         @Override
@@ -228,7 +276,6 @@ public class activity_comunicacion extends Activity
         }
     };
 
-    //Listener del boton enviar que envia  msj para selecionar un mensaje del TecladoMatricial a Arduino atraves del Bluethoot
     private View.OnClickListener btnNMEEEMListener = new View.OnClickListener()
     {
         @Override
@@ -240,7 +287,6 @@ public class activity_comunicacion extends Activity
         }
     };
 
-    //Listener del boton enviar que envia  msj para selecionar un mensaje del TecladoMatricial a Arduino atraves del Bluethoot
     private View.OnClickListener btnE5MTAListener = new View.OnClickListener()
     {
         @Override
@@ -252,7 +298,6 @@ public class activity_comunicacion extends Activity
         }
     };
 
-    //Listener del boton enviar que envia  msj para selecionar un mensaje del TecladoMatricial a Arduino atraves del Bluethoot
     private View.OnClickListener btnLACListener = new View.OnClickListener()
     {
         @Override
@@ -264,7 +309,6 @@ public class activity_comunicacion extends Activity
         }
     };
 
-    //Listener del boton enviar que envia  msj para selecionar un mensaje del TecladoMatricial a Arduino atraves del Bluethoot
     private View.OnClickListener btnNMListener = new View.OnClickListener()
     {
         @Override
@@ -276,7 +320,6 @@ public class activity_comunicacion extends Activity
         }
     };
 
-    //Listener del boton enviar que envia  msj para selecionar un mensaje del TecladoMatricial a Arduino atraves del Bluethoot
     private View.OnClickListener btnREINICIARListener = new View.OnClickListener()
     {
         @Override
@@ -294,49 +337,59 @@ public class activity_comunicacion extends Activity
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show(); // el mensaje que se desea mostrar y la duración del mensaje
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        synchronized (this) {
+            Log.d("sensor", event.sensor.getName());
+            mConnectedThread.write(new String("5"));
+            showToast("Mensaje enviado");
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
+
     //******************************************** Hilo secundario del Activity**************************************
     //*************************************** recibe los datos enviados por el HC05**********************************
 
-    private class ConnectedThread extends Thread
-    {
+    private class ConnectedThread extends Thread {
         private final InputStream mmInStream; // InputStream es una clase abstracta en Java que proporciona una
         // interfaz para leer datos de una fuente de entrada, como un archivo o un flujo de red
         private final OutputStream mmOutStream;
 
         //Constructor de la clase del hilo secundario
-        public ConnectedThread(BluetoothSocket socket)
-        {
+        public ConnectedThread(BluetoothSocket socket) {
             InputStream tmpIn = null;
             OutputStream tmpOut = null;
 
-            try
-            {
+            try {
                 //Crear flujos de E/S para la conexión
                 tmpIn = socket.getInputStream();
                 tmpOut = socket.getOutputStream();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
 
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
         }
 
         //metodo run del hilo, que va a entrar en una espera activa para recibir los msjs del HC05
-        public void run()
-        {
+        public void run() {
             byte[] buffer = new byte[256];
             int bytes;
 
             //el hilo secundario se queda esperando mensajes del HC05
-            while (true)
-            {
-                try
-                {
+            while (true) {
+                try {
                     //se leen los datos del Bluethoot
                     bytes = mmInStream.read(buffer);
                     Log.d("MainActivity", new String(buffer, 0, bytes));
                     String readMessage = new String(buffer, 0, bytes);
 
-                     //se muestran en el layout de la activity, utilizando el handler del hilo
+                    //se muestran en el layout de la activity, utilizando el handler del hilo
                     // principal antes mencionado
                     bluetoothIn.obtainMessage(handlerState, bytes, -1, readMessage).sendToTarget(); // crea un mensaje para enviar
                     // información desde el hilo de conexión Bluetooth (bluetoothIn) al hilo principal de la interfaz de usuario.
@@ -348,18 +401,15 @@ public class activity_comunicacion extends Activity
 
 
         //método de escritura
-        public void write(String input)
-        {
+        public void write(String input) {
             byte[] msgBuffer = input.getBytes();           //convierte la cadena ingresada en bytes
-            try
-            {
+            try {
                 mmOutStream.write(msgBuffer);                //escribir bytes sobre la conexión BT a través de outstream
-            } catch (IOException e){
+            } catch (IOException e) {
                 //si no puede escribir, cierre la aplicación
                 showToast("La conexion fallo");
                 finish();
             }
         }
     }
-
 }
