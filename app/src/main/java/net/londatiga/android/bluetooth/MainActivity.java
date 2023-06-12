@@ -158,7 +158,7 @@ public class MainActivity extends Activity
 	}
 
 	private void showEnabled() {
-		txtEstado.setText("Bluetooth Habilitar");
+		txtEstado.setText("Bluetooth Habilitado");
 		txtEstado.setTextColor(Color.BLUE);
 
 		btnActivar.setText("Desactivar");
