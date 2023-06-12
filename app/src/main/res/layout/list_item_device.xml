@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" 
     android:paddingTop="5dp"
-    android:paddingBottom="5dp"
-    android:background="@drawable/bluetooth">
+    android:paddingBottom="5dp">
 
     <Button
         android:id="@+id/btn_pair"
@@ -26,7 +25,7 @@
         android:textSize="16sp"
         android:textColor="#000000"
         android:text="Galaxy Nexus"
-        android:background="@drawable/round2"/>
+        android:background="@drawable/round4"/>
 	
     <TextView
         android:id="@+id/tv_address"
@@ -36,6 +35,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignBottom="@+id/btn_pair"
         android:text="000000000"
-        android:background="@drawable/round2"/>
+        android:background="@drawable/round4"/>
     
 </RelativeLayout>
