@@ -9,6 +9,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -41,6 +42,8 @@ public class activity_comunicacion extends Activity implements SensorEventListen
     Button btnREINICIAR;
     //TextView txtMensaje;
 
+    private MediaPlayer mediaPlayer;
+
     Handler bluetoothIn; // Handler en Android es una clase que permite enviar y procesar mensajes y tareas en un hilo o hilo de ejecución específico.
     final int handlerState = 0; //utilizado para identificar el mensaje del controlador
 
@@ -69,7 +72,7 @@ public class activity_comunicacion extends Activity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comunicacion);
-
+        mediaPlayer = MediaPlayer.create(this,R.raw.timbre);
         //Se definen los componentes del layout
         btnNPAA = (Button) findViewById(R.id.NPAA);
         btnESE = (Button) findViewById(R.id.ESE);
@@ -199,9 +202,9 @@ public class activity_comunicacion extends Activity implements SensorEventListen
                     String timbre = new String(readMessage);
                     Log.d("Valor timbre", timbre);
 
-                    //Estaría bueno poner una notificación
                     if (timbre.equals("1")) {
                         showToast("Tocan timbre!!!");
+                        mediaPlayer.start();
                     }
                 }
             }
