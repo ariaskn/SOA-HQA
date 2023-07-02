@@ -23,7 +23,8 @@ public class Inicio extends Activity
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(Inicio.this,MainActivity.class);
+                getApplicationContext();
+                Intent intent = new Intent(Inicio.this, MainActivityOld.class);
                 startActivity(intent); // mostrar la siguiente pantalla
             }
         });
