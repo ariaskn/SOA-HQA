@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class Inicio extends Activity
+public class Home extends Activity
 {
     private Button btnEmpezar;
 
@@ -23,7 +23,7 @@ public class Inicio extends Activity
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(Inicio.this,MainActivity.class);
+                Intent intent = new Intent(Home.this, BluetoothActivity.class);
                 startActivity(intent); // mostrar la siguiente pantalla
             }
         });

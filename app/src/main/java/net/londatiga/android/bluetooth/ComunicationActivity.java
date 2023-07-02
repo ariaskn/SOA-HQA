@@ -28,7 +28,7 @@ import android.util.Log;
  **********************************************************************************************************/
 
 //******************************************** Hilo principal del Activity**************************************
-public class activity_comunicacion extends Activity implements SensorEventListener {
+public class ComunicationActivity extends Activity implements SensorEventListener {
     SensorManager sm;
     Sensor sensor;
 

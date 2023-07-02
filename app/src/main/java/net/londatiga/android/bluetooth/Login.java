@@ -26,7 +26,7 @@ public class Login extends Activity {
                         if (username.getText().toString().equals("hqa_soa")
                                 && password.getText().toString().equals("hqa_soa") ) {
                             Toast.makeText(Login.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
-                            Intent passToInicio = new Intent(Login.this, Inicio.class);
+                            Intent passToInicio = new Intent(Login.this, Home.class);
                             startActivity(passToInicio);
                         }else {
                             Toast.makeText(Login.this, "LOGIN FAILED!!", Toast.LENGTH_SHORT).show();

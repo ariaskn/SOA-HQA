@@ -31,7 +31,7 @@
 
         <!-- - Defino la activity de Inicio -->
         <activity
-            android:name=".Inicio"
+            android:name=".Home"
             android:exported="false"
             tools:ignore="AppLinkUrlError">
             <intent-filter>
@@ -41,7 +41,7 @@
 
         <!-- - Defino la activity postInicio -->
         <activity
-            android:name=".MainActivity"
+            android:name=".BluetoothActivity"
             android:exported="false"
             tools:ignore="AppLinkUrlError">
             <intent-filter>
@@ -57,7 +57,7 @@
         </activity>
 
         <!-- - Defino la activity que se comunica, transfierendo datos de los sensores, con Arduino -->
-        <activity android:name=".activity_comunicacion" />
+        <activity android:name=".ComunicationActivity" />
     </application>
 
 </manifest>
