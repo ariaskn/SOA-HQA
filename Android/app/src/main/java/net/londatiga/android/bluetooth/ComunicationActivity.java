@@ -42,15 +42,18 @@ public class ComunicationActivity extends Activity implements SensorEventListene
     Button btnREINICIAR;
     //TextView txtMensaje;
 
-    private MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer; //Objeto para reproducir el sonido del timbre
 
-    Handler bluetoothIn; // Handler en Android es una clase que permite enviar y procesar mensajes y tareas en un hilo o hilo de ejecución específico.
+    // Handler en Android es una clase que permite enviar y procesar mensajes y tareas en un hilo o hilo de ejecución específico.
+    Handler bluetoothIn; //Este bluetoothIn se va a usar en el hilo ConnectedThread.
+
     final int handlerState = 0; //utilizado para identificar el mensaje del controlador
 
     private BluetoothAdapter btAdapter = null; // BluetoothAdapter es una clase fundamental en Android que representa el adaptador Bluetooth del dispositivo.
     private BluetoothSocket btSocket = null; // BluetoothSocket en Android representa un socket Bluetooth, que es una conexión de comunicación entre dos dispositivos Bluetooth
     private StringBuilder recDataString = new StringBuilder(); // StringBuilder es mutable, lo que significa que se puede modificar su contenido a medida que se necesite.(es un string)
 
+    //Connected Thread es una clase que creamos nosotros, un thread.
     private ConnectedThread mConnectedThread; // ConnectedThread se refiere a una clase o componente que maneja la comunicación en un hilo de ejecución separado
 
     // SPP UUID service  - Funciona en la mayoria de los dispositivos
@@ -112,20 +115,23 @@ public class ComunicationActivity extends Activity implements SensorEventListene
         super.onResume();
 
         //Obtengo el parametro, aplicando un Bundle, que me indica la Mac Adress del HC05
-        Intent intent = getIntent();
+        Intent intent = getIntent(); //Obtengo el intent que levantó esta activity
         Bundle extras = intent.getExtras();
 
-        address = extras.getString("Direccion_Bluethoot");
+        //Obtiene la direccion bluetooth que se definio en DeviceListActivity
+        address = extras.getString("Direccion_Bluetooth");
 
+        //Obtengo el arduino
         BluetoothDevice device = btAdapter.getRemoteDevice(address);
 
-        //se realiza la conexion del Bluethoot crea y se conectandose a atraves de un socket
+        //Creamos el socket para conectarnos con el arduino
         try {
             btSocket = createBluetoothSocket(device);
         } catch (IOException e) {
             showToast("La creacción del Socket fallo");
         }
-        // Establezca la conexión de enchufe Bluetooth.
+
+        //Establecemos la conexión con el arduino
         try {
             btSocket.connect();
         } catch (IOException e) {
@@ -138,11 +144,13 @@ public class ComunicationActivity extends Activity implements SensorEventListene
 
         //Una establecida la conexion con el Hc05 se crea el hilo secundario, el cual va a recibir
         // los datos de Arduino atraves del bluethoot
+
+        //Creamos un hilo secundario para la conexión
         mConnectedThread = new ConnectedThread(btSocket);
         mConnectedThread.start();
 
-        //Envío un carácter al reanudar. Inicio de la transmisión para verificar que el dispositivo esté conectado
-        //Si no es una excepción, se lanzará en el método de escritura y se llamará a finish()
+        //Envío un carácter al reanudar para verificar que el dispositivo esté conectado
+        //Si el dispositivo no esta conectado, el método "write" lanza una excepción y se llamará a finish() que finaliza la aplicación
         mConnectedThread.write("x");
     }
 
@@ -153,7 +161,7 @@ public class ComunicationActivity extends Activity implements SensorEventListene
         Parar_Sensores();
         super.onPause();
         try {
-            //No dejes los enchufes de Bluetooth abiertos al salir de la actividad
+            //Al salir de la activity, cerramos la conexión.
             btSocket.close();
         } catch (IOException e2) {
             //insertar codigo para tratar le e
@@ -317,6 +325,7 @@ public class ComunicationActivity extends Activity implements SensorEventListene
         private final OutputStream mmOutStream;
 
         //Constructor de la clase del hilo secundario
+        // El socket llega ya conectado al bluetooth
         public ConnectedThread(BluetoothSocket socket) {
             InputStream tmpIn = null;
             OutputStream tmpOut = null;

@@ -25,6 +25,7 @@ public class Login extends Activity {
                     public void onClick(View view) {
                         if (username.getText().toString().equals("hqa_soa")
                                 && password.getText().toString().equals("hqa_soa") ) {
+                            //Toast.makeText(Login.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
                             Intent passToInicio = new Intent(Login.this, Home.class);
                             passToInicio.putExtra("user","hqa_soa");
                             startActivity(passToInicio);
