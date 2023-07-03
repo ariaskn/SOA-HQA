@@ -229,6 +229,12 @@ public class BluetoothActivity extends Activity
 					showToast("Bluetooth activado.");
 					showEnabled();
 				}
+				//Si esta desactivado
+				if (state == BluetoothAdapter.STATE_OFF)
+				{
+					showToast("Bluetooth desactivado.");
+					showDisabled();
+				}
 			}
 			//Si se inicio la busqueda de dispositivos Bluetooth
 			else if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action))
