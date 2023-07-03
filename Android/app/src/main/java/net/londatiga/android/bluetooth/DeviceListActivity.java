@@ -22,42 +22,43 @@ import android.widget.Toast;
 
 public class DeviceListActivity extends Activity
 {
-    private ListView mListView;
-    private DeviceListAdapter mAdapter;
+    private ListView mListView; //Una vista en forma de lista
+    private DeviceListAdapter mAdapter; //Arma la lista de dispositivos
     private ArrayList<BluetoothDevice> mDeviceList;
-    private int posicionListBluethoot;
+    private int posicionListBluethoot; //Para saber el dispositivo que emparejamos, ya que es una lista de dispositivos.
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.activity_paired_devices);
 
         //defino los componentes de layout
+        //Defino la view de la lista de dispositivos
         mListView = (ListView) findViewById(R.id.lv_paired);
 
         //obtengo por medio de un Bundle del intent la lista de dispositivos encontrados
+        //Obtiene el ArrayList "device.list" que viene de la busqueda de dispositivos que se hace en BluetoothActivity
         mDeviceList = getIntent().getExtras().getParcelableArrayList("device.list");
 
-        //defino un adaptador para el ListView donde se van mostrar en la activity los dispositovs encontrados
+        //defino un adaptador para el ListView donde se van mostrar en la activity los dispositivos encontrados
         mAdapter = new DeviceListAdapter(this);
 
-        //asocio el listado de los dispositovos pasado en el bundle al adaptador del Listview
+        //asocio el listado de los dispositivos encontrados al adaptador del Listview
         mAdapter.setData(mDeviceList);
 
-        //defino un listener en el boton emparejar del listview
+        //defino un listener en el boton emparejar del listview.
+        // Es decir, le definimos el boton de "Pair" o "Emparejar"
         mAdapter.setListener(listenerBotonEmparejar);
         mListView.setAdapter(mAdapter);
 
         //se definen un broadcastReceiver que captura el broadcast del SO cuando captura los siguientes eventos:
         IntentFilter filter = new IntentFilter();
-
-        filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED); //Cuando se empareja o desempareja el bluethoot
-
+        filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED); //Cuando se empareja o desempareja el Bluetooth
         //se define (registra) el handler que captura los broadcast anterirmente mencionados.
         registerReceiver(mPairReceiver, filter);
-
     }
 
     @Override
@@ -92,23 +93,25 @@ public class DeviceListActivity extends Activity
     }
 
     //Metodo que actua como Listener de los eventos que ocurren en los componentes graficos de la activty
+    //Nos crea el boton de Pair y lo empareja o desempareja dependiendo si ya estaba emparejado o no.
     private DeviceListAdapter.OnPairButtonClickListener listenerBotonEmparejar = new DeviceListAdapter.OnPairButtonClickListener() {
         @Override
         public void onPairButtonClick(int position) {
-           //Obtengo los datos del dispostivo seleccionado del listview por el usuario
+
+           //Obtengo el dispostivo seleccionado del listview por el usuario
             BluetoothDevice device = mDeviceList.get(position);
 
-            //Se checkea si el sipositivo ya esta emparejado
+
+            //Se verifica si el dispostivo ya esta emparejado
             if (device.getBondState() == BluetoothDevice.BOND_BONDED)
             {
-                //Si esta emparejado,quiere decir que se selecciono desemparjar y entonces se le desempareja
+                //Si esta emparejado,quiere decir que se selecciono "desemparejar" o "Unpair" y entonces lo desemparejamos.
                 unpairDevice(device);
             }
             else
             {
-
                 //Si no esta emparejado,quiere decir que se selecciono emparjar y entonces se le empareja
-                showToast("Emparejando");
+                showToast("Emparejando dispositivo");
                 posicionListBluethoot = position;
                 pairDevice(device);
 
@@ -116,7 +119,9 @@ public class DeviceListActivity extends Activity
         }
     };
 
+
     //Handler que captura los brodacast que emite el SO al ocurrir los eventos del bluethoot
+    //Siempre se necesita un handler para luego pasarselo al registerReceiver(HANDLER, INTENT QUE CONTIENEN LOS BROADCAST MESSAGES QUE ESCUCHAMOS);
     private final BroadcastReceiver mPairReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
 
@@ -141,7 +146,7 @@ public class DeviceListActivity extends Activity
                     //Para eso se le envia como parametro la direccion(MAC) del bluethoot Arduino
                     String direccionBluethoot = dispositivo.getAddress();
                     Intent i = new Intent(DeviceListActivity.this, ComunicationActivity.class);
-                    i.putExtra("Direccion_Bluethoot", direccionBluethoot);
+                    i.putExtra("Direccion_Bluetooth", direccionBluethoot);
 
                     startActivity(i);
 
