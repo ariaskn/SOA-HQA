@@ -1,4 +1,3 @@
-
 package net.londatiga.android.bluetooth;
 
 import android.app.Activity;
@@ -8,10 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class Home extends Activity {
+public class Home extends Activity
+{
     private Button btnEmpezar;
 
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
@@ -26,7 +27,8 @@ public class Home extends Activity {
         btnEmpezar.setOnClickListener(new View.OnClickListener() // si le dan un click al boton
         {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent intent = new Intent(Home.this, BluetoothActivity.class);
                 startActivity(intent); // mostrar la siguiente pantalla
             }
