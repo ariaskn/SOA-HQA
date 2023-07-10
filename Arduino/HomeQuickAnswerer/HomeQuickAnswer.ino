@@ -1,4 +1,4 @@
-#include <Wire.h> 
+#include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <Keypad.h>
 #include <SoftwareSerial.h>
@@ -7,7 +7,7 @@
 // Constantes
 // ------------------------------------------------
 
-LiquidCrystal_I2C lcd(0x27,16,2);
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 const char KEY_1 = '1';
 const char KEY_2 = '2';
@@ -25,25 +25,25 @@ const char DONT_DISTURB_MESSAGE_BOTTOM[16] = "   MOLESTAR";
 const char WAITING_ANSWER_MESSAGE_ABOVE[16] = "   ESPERANDO   ";
 const char WAITING_ANSWER_MESSAGE_BOTTOM[16] = "   RESPUESTA   ";
 
-const char* MESSAGES_ABOVE[6] = 
-{
-    "    No puedo",
-    " Estoy saliendo",
-    "    No estoy",
-    "No me encuentro",
-    "  En 5 minutos",
-    "  Llamame al"
-};
+const char *MESSAGES_ABOVE[6] =
+        {
+                "    No puedo",
+                " Estoy saliendo",
+                "    No estoy",
+                "No me encuentro",
+                "  En 5 minutos",
+                "  Llamame al"
+        };
 
-const char* MESSAGES_BOTTOM[6] =
-{
-    "atenderte ahora",
-    "    esperame",
-    "   interesado",
-    "en este momento",
-    "   te atiendo",
-    "      cel"
-};
+const char *MESSAGES_BOTTOM[6] =
+        {
+                "atenderte ahora",
+                "    esperame",
+                "   interesado",
+                "en este momento",
+                "   te atiendo",
+                "      cel"
+        };
 
 const byte ROW = 4;
 const byte COLUMN = 4;
@@ -51,6 +51,7 @@ const byte COLUMN = 4;
 // ------------------------------------------------
 // TEMPORIZADORES
 // ------------------------------------------------
+
 #define MAX_TIME_MILLIS 5000
 int flagTimer = 0;
 unsigned long actualTime, previousTime;
@@ -62,27 +63,34 @@ unsigned long actualTime, previousTime;
 #define POTENTIOMETER_PIN  A3
 #define START_PUSH_BUTTON_PIN 13
 #define BUZZER_PIN 10
-SoftwareSerial BTserial(11,12); // TX | RX
+
+// ------------------------------------------------
+// Bluetooth
+// ------------------------------------------------
+
+SoftwareSerial BTserial(11, 12); // TX | RX
 
 // ------------------------------------------------
 // Teclado matricial
 // ------------------------------------------------
+
 byte row_pin[] = {9, 8, 7, 6};
 byte column_pin[] = {5, 4, 3, 2};
 
 char keys[ROW][COLUMN] =
-{
-    {'1', '2', '3', 'A'},
-    {'4', '5', '6', 'B'},
-    {'7', '8', '9', 'C'},
-    {'*', '0', '#', 'D'}
-};
+        {
+                {'1', '2', '3', 'A'},
+                {'4', '5', '6', 'B'},
+                {'7', '8', '9', 'C'},
+                {'*', '0', '#', 'D'}
+        };
 
 Keypad keypad4x4 = Keypad(makeKeymap(keys), row_pin, column_pin, ROW, COLUMN);
 
 // ------------------------------------------------
 // Estados del embebido
 // ------------------------------------------------
+
 enum state_enum
 {
     DONT_DISTURB_STATE,
@@ -94,6 +102,7 @@ enum state_enum
 // ------------------------------------------------
 // Eventos posibles
 // ------------------------------------------------
+
 enum event_enum
 {
     DONT_DISTURB_KEY_EVENT,
@@ -107,6 +116,7 @@ enum event_enum
 // ------------------------------------------------
 // Estructura de event
 // ------------------------------------------------
+
 typedef struct event_struct
 {
     event_enum type;
@@ -117,6 +127,7 @@ typedef struct event_struct
 // ------------------------------------------------
 // Variables globales
 // ------------------------------------------------
+
 state_enum current_state;
 event_t event;
 int buzzer_volume;
@@ -167,8 +178,8 @@ boolean get_key(char key)
 {
     if (key != NULL)
     {
-	    int keyNumber = -1;
-        
+        int keyNumber = -1;
+
         switch (key)
         {
             case KEY_1:
@@ -193,12 +204,12 @@ boolean get_key(char key)
                 Serial.println("Key not valid");
         }
 
-		if(keyNumber != -1)
+        if (keyNumber != -1)
         {
-			event.type = CHANGE_MESSAGE_EVENT;
-			strcpy(event.messageAbove, MESSAGES_ABOVE[keyNumber]);
-			strcpy(event.messageBottom, MESSAGES_BOTTOM[keyNumber]);
-		}
+            event.type = CHANGE_MESSAGE_EVENT;
+            strcpy(event.messageAbove, MESSAGES_ABOVE[keyNumber]);
+            strcpy(event.messageBottom, MESSAGES_BOTTOM[keyNumber]);
+        }
     }
 }
 
@@ -266,9 +277,9 @@ void get_event()
         strcpy(event.messageBottom, WAITING_ANSWER_MESSAGE_BOTTOM);
     }
 
-    if(BTserial.available())
+    if (BTserial.available())
     {
-        btKey =(char) BTserial.read();
+        btKey = (char) BTserial.read();
         get_key(btKey);
 
         if (btKey == KEY_ASTERISK)
@@ -293,12 +304,10 @@ void get_event()
 // ------------------------------------------------
 // Inicialización
 // ------------------------------------------------
+
 void start()
 {
-      // Paso 3
     lcd.init();
-    
-    // Paso 4
     lcd.backlight();
     Serial.begin(9600);
     BTserial.begin(9600);
@@ -317,10 +326,11 @@ void start()
 // ------------------------------------------------
 // Implementación maquina de estados
 // ------------------------------------------------
+
 void fsm()
 {
     get_event();
-    
+
     switch (current_state)
     {
         case DONT_DISTURB_STATE:
@@ -409,6 +419,7 @@ void fsm()
 // ------------------------------------------------
 // Arduino setup
 // ------------------------------------------------
+
 void setup()
 {
     start();
@@ -417,6 +428,7 @@ void setup()
 // ------------------------------------------------
 // Arduino loop
 // ------------------------------------------------
+
 void loop()
 {
     fsm();
