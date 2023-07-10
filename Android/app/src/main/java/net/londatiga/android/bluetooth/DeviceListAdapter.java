@@ -2,8 +2,6 @@ package net.londatiga.android.bluetooth;
 
 import java.util.List;
 
-import net.londatiga.android.bluetooth.R;
-
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 
@@ -81,15 +79,11 @@ public class DeviceListAdapter extends BaseAdapter
         holder.nameTv.setText(device.getName());
         holder.addressTv.setText(device.getAddress());
         holder.pairBtn.setText((device.getBondState() == BluetoothDevice.BOND_BONDED) ? "Unpair" : "Pair");
-        holder.pairBtn.setOnClickListener(new View.OnClickListener()
+        holder.pairBtn.setOnClickListener(v ->
         {
-            @Override
-            public void onClick(View v)
+            if (mListener != null)
             {
-                if (mListener != null)
-                {
-                    mListener.onPairButtonClick(position);
-                }
+                mListener.onPairButtonClick(position);
             }
         });
 
@@ -98,7 +92,7 @@ public class DeviceListAdapter extends BaseAdapter
 
     public interface OnPairButtonClickListener
     {
-        public abstract void onPairButtonClick(int position);
+        void onPairButtonClick(int position);
     }
 
     static class ViewHolder

@@ -17,7 +17,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 
 import android.app.Activity;
@@ -372,15 +371,15 @@ public class BluetoothActivity extends Activity
                     enableComponent(); // Now you call here what ever you want :)
                 } else
                 {
-                    String perStr = "";
+                    StringBuilder perStr = new StringBuilder();
                     for (String per : permissions)
                     {
-                        perStr += "\n" + per;
+                        perStr.append("\n").append(per);
                     }
                     // permissions list of don't granted permission
-                    Toast.makeText(this, "ATENCION: La aplicacion no funcionara " + "correctamente debido a la falta de Permisos", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "ATENCION: La aplicacion no funcionara correctamente " +
+                            "debido a la falta de Permisos ( " + perStr + " )", Toast.LENGTH_LONG).show();
                 }
-                return;
             }
         }
     }

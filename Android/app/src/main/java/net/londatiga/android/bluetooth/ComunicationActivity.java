@@ -1,5 +1,6 @@
 package net.londatiga.android.bluetooth;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -21,8 +22,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
-import android.util.Log;
-
 /*********************************************************************************************************
  * Activity que muestra realiza la comunicacion con Arduino
  **********************************************************************************************************/
@@ -42,7 +41,6 @@ public class ComunicationActivity extends Activity implements SensorEventListene
     Button btnNEI;
     Button btnNMEEEM;
     Button btnE5MTA;
-    //TextView txtMensaje;
     Button btnLAC;
     Button btnNM;
     Button btnREINICIAR;
@@ -51,7 +49,6 @@ public class ComunicationActivity extends Activity implements SensorEventListene
     private MediaPlayer mediaPlayer; //Objeto para reproducir el sonido del timbre
     private BluetoothAdapter btAdapter = null; // BluetoothAdapter es una clase fundamental en Android que representa el adaptador Bluetooth del dispositivo.
     private BluetoothSocket btSocket = null; // BluetoothSocket en Android representa un socket Bluetooth, que es una conexión de comunicación entre dos dispositivos Bluetooth
-    private StringBuilder recDataString = new StringBuilder(); // StringBuilder es mutable, lo que significa que se puede modificar su contenido a medida que se necesite.(es un string)
     //Connected Thread es una clase que creamos nosotros, un thread.
     private ConnectedThread mConnectedThread; // ConnectedThread se refiere a una clase o componente que maneja la comunicación en un hilo de ejecución separado
     //Listener del boton enviar que envia  msj para selecionar un mensaje del TecladoMatricial a Arduino atraves del Bluethoot
@@ -289,11 +286,13 @@ public class ComunicationActivity extends Activity implements SensorEventListene
     }
 
     //Handler que sirve que permite mostrar datos en el Layout al hilo secundario
+    @SuppressLint("HandlerLeak")
     private Handler Handler_Msg_Hilo_Principal()
     {
         return new Handler()
         {
             //Sobrescribe el método handleMessage para manejar los mensajes enviados al hilo principal
+            @SuppressLint("HandlerLeak")
             public void handleMessage(android.os.Message msg)
             {
                 //Si se recibio un msj del hilo secundario
@@ -332,7 +331,6 @@ public class ComunicationActivity extends Activity implements SensorEventListene
     @Override
     public void onAccuracyChanged(Sensor sensor, int i)
     {
-
     }
 
     //******************************************** Hilo secundario del Activity**************************************
@@ -396,10 +394,10 @@ public class ComunicationActivity extends Activity implements SensorEventListene
         //método de escritura
         public void write(String input)
         {
-            byte[] msgBuffer = input.getBytes();           //convierte la cadena ingresada en bytes
+            byte[] msgBuffer = input.getBytes(); //convierte la cadena ingresada en bytes
             try
             {
-                mmOutStream.write(msgBuffer);                //escribir bytes sobre la conexión BT a través de outstream
+                mmOutStream.write(msgBuffer);    //escribir bytes sobre la conexión BT a través de outstream
             } catch (IOException e)
             {
                 e.printStackTrace();
