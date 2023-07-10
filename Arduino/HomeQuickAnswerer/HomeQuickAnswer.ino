@@ -25,7 +25,8 @@ const char DONT_DISTURB_MESSAGE_BOTTOM[16] = "   MOLESTAR";
 const char WAITING_ANSWER_MESSAGE_ABOVE[16] = "   ESPERANDO   ";
 const char WAITING_ANSWER_MESSAGE_BOTTOM[16] = "   RESPUESTA   ";
 
-const char* MESSAGES_ABOVE[6] = {
+const char* MESSAGES_ABOVE[6] = 
+{
     "    No puedo",
     " Estoy saliendo",
     "    No estoy",
@@ -34,7 +35,8 @@ const char* MESSAGES_ABOVE[6] = {
     "  Llamame al"
 };
 
-const char* MESSAGES_BOTTOM[6] = {
+const char* MESSAGES_BOTTOM[6] =
+{
     "atenderte ahora",
     "    esperame",
     "   interesado",
@@ -69,12 +71,12 @@ byte row_pin[] = {9, 8, 7, 6};
 byte column_pin[] = {5, 4, 3, 2};
 
 char keys[ROW][COLUMN] =
-        {
-                {'1', '2', '3', 'A'},
-                {'4', '5', '6', 'B'},
-                {'7', '8', '9', 'C'},
-                {'*', '0', '#', 'D'}
-        };
+{
+    {'1', '2', '3', 'A'},
+    {'4', '5', '6', 'B'},
+    {'7', '8', '9', 'C'},
+    {'*', '0', '#', 'D'}
+};
 
 Keypad keypad4x4 = Keypad(makeKeymap(keys), row_pin, column_pin, ROW, COLUMN);
 
@@ -135,6 +137,7 @@ boolean verifyTimeout()
         actualTime = millis();
         previousTime = actualTime;
     }
+
     if (flagTimer != 2 && actualTime - previousTime > MAX_TIME_MILLIS)
     {
         event.type = TIMEOUT_EVENT;
@@ -164,7 +167,8 @@ boolean get_key(char key)
 {
     if (key != NULL)
     {
-	int keyNumber = -1;
+	    int keyNumber = -1;
+        
         switch (key)
         {
             case KEY_1:
@@ -188,7 +192,9 @@ boolean get_key(char key)
             default:
                 Serial.println("Key not valid");
         }
-		if(keyNumber != -1){
+
+		if(keyNumber != -1)
+        {
 			event.type = CHANGE_MESSAGE_EVENT;
 			strcpy(event.messageAbove, MESSAGES_ABOVE[keyNumber]);
 			strcpy(event.messageBottom, MESSAGES_BOTTOM[keyNumber]);
@@ -233,28 +239,33 @@ void get_event()
     char key = keypad4x4.getKey();
 
     verifyTimeout();
+
     if (key == KEY_NUMBER)
     {
         event.type = RESTART_KEY_EVENT;
         strcpy(event.messageAbove, WELCOME_MESSAGE_ABOVE);
         strcpy(event.messageBottom, WELCOME_MESSAGE_BOTTOM);
     }
+
     if (check_potentiometer_variation())
     {
         change_buzzer_volume();
     }
+
     if (key == KEY_ASTERISK)
     {
         event.type = DONT_DISTURB_KEY_EVENT;
         strcpy(event.messageAbove, DONT_DISTURB_MESSAGE_ABOVE);
         strcpy(event.messageBottom, DONT_DISTURB_MESSAGE_BOTTOM);
     }
+
     if (check_push_button())
     {
         event.type = PUSH_BUTTON_EVENT;
         strcpy(event.messageAbove, WAITING_ANSWER_MESSAGE_ABOVE);
         strcpy(event.messageBottom, WAITING_ANSWER_MESSAGE_BOTTOM);
     }
+
     if(BTserial.available())
     {
         btKey =(char) BTserial.read();
@@ -275,6 +286,7 @@ void get_event()
         }
         BTserial.flush();
     }
+
     get_key(key);
 }
 
@@ -308,6 +320,7 @@ void start()
 void fsm()
 {
     get_event();
+    
     switch (current_state)
     {
         case DONT_DISTURB_STATE:

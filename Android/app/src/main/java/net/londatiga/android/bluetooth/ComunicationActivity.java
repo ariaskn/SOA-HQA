@@ -75,7 +75,7 @@ public class ComunicationActivity extends Activity implements SensorEventListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comunicacion);
-        mediaPlayer = MediaPlayer.create(this,R.raw.timbre);
+        mediaPlayer = MediaPlayer.create(this, R.raw.timbre);
         //Se definen los componentes del layout
         btnNPAA = (Button) findViewById(R.id.NPAA);
         btnESE = (Button) findViewById(R.id.ESE);
@@ -128,6 +128,7 @@ public class ComunicationActivity extends Activity implements SensorEventListene
         try {
             btSocket = createBluetoothSocket(device);
         } catch (IOException e) {
+            e.printStackTrace();
             showToast("La creacción del Socket fallo");
         }
 
@@ -138,7 +139,7 @@ public class ComunicationActivity extends Activity implements SensorEventListene
             try {
                 btSocket.close();
             } catch (IOException e2) {
-                //inserte código para lidiar con esto
+                e2.printStackTrace();
             }
         }
 
@@ -164,7 +165,7 @@ public class ComunicationActivity extends Activity implements SensorEventListene
             //Al salir de la activity, cerramos la conexión.
             btSocket.close();
         } catch (IOException e2) {
-            //insertar codigo para tratar le e
+            e2.printStackTrace();
         }
     }
 
@@ -208,7 +209,6 @@ public class ComunicationActivity extends Activity implements SensorEventListene
                 {
                     String readMessage = (String) msg.obj; // obj es un campo de tipo genérico que puede contener cualquier objeto.
                     String timbre = new String(readMessage);
-                    Log.d("Valor timbre", timbre);
 
                     if (timbre.equals("1")) {
                         showToast("Tocan timbre!!!");
@@ -305,7 +305,6 @@ public class ComunicationActivity extends Activity implements SensorEventListene
     public void onSensorChanged(SensorEvent event) {
 
         synchronized (this) {
-            Log.d("sensor", event.sensor.getName());
             mConnectedThread.write(new String("5"));
             showToast("Mensaje enviado");
         }
@@ -335,6 +334,7 @@ public class ComunicationActivity extends Activity implements SensorEventListene
                 tmpIn = socket.getInputStream();
                 tmpOut = socket.getOutputStream();
             } catch (IOException e) {
+                e.printStackTrace();
             }
 
             mmInStream = tmpIn;
@@ -351,7 +351,6 @@ public class ComunicationActivity extends Activity implements SensorEventListene
                 try {
                     //se leen los datos del Bluethoot
                     bytes = mmInStream.read(buffer);
-                    Log.d("MainActivity", new String(buffer, 0, bytes));
                     String readMessage = new String(buffer, 0, bytes);
 
                     //se muestran en el layout de la activity, utilizando el handler del hilo
@@ -359,6 +358,7 @@ public class ComunicationActivity extends Activity implements SensorEventListene
                     bluetoothIn.obtainMessage(handlerState, bytes, -1, readMessage).sendToTarget(); // crea un mensaje para enviar
                     // información desde el hilo de conexión Bluetooth (bluetoothIn) al hilo principal de la interfaz de usuario.
                 } catch (IOException e) {
+                    e.printStackTrace();
                     break;
                 }
             }
@@ -371,6 +371,7 @@ public class ComunicationActivity extends Activity implements SensorEventListene
             try {
                 mmOutStream.write(msgBuffer);                //escribir bytes sobre la conexión BT a través de outstream
             } catch (IOException e) {
+                e.printStackTrace();
                 //si no puede escribir, cierre la aplicación
                 showToast("La conexion fallo");
                 finish();
